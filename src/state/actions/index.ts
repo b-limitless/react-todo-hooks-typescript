@@ -28,9 +28,10 @@ const url = 'https://jsonplaceholder.typicode.com/todos/';
 export const fetchTodos = () => {
     return async(dispatch:Dispatch) => {
         const response = await axios.get(url);
+        const sliceData = response.data.splice(0,10);
         dispatch<FetchTodosAction>({
             type: ActionTypes.fetchTodos,
-            payload: response.data
+            payload: sliceData
         })
     }
 }
