@@ -1,44 +1,59 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useActions } from '../hooks/use-actions';
 import { useTypedSelector } from '../hooks/use-typed-selector';
+import './App.css';
 
 interface Todo {
     title: string;
-    completed: boolean;
+    completed: boolean | string;
 }
 
-export const App: React.FC = () => {
-    const [formData, setFormData] = useState<Todo>({ title: '', completed: false });
+interface TodoItem extends Todo {
+    id: number;
+}
+export const App = () => {
+    const [formData, setFormData] = useState<Todo>({ title: '', completed: '' });
+    const [editMode, setEditMode] = useState<boolean>(false);
     const todos = useTypedSelector(({ todos }) => {
         return todos;
     });
-
     const { fetchTodos, deleteTodo, addTodo } = useActions();
+
+    const editTodo = useCallback((todo: TodoItem) => {
+        // Dispatch update here 
+        setFormData(todo);
+        setEditMode(state => !state)
+    }, [])
+    console.log(editMode)
     const getTodoList = useMemo(() => {
         if (todos.length > 0) {
-            return todos.map(todo => <div onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.title}</div>)
-        }
-        return <></>;
-    }, [todos, deleteTodo]);
+            // @ts-ignore
+            return todos.map((todo) => <div key={todo.id} className="wrapper"><div onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.title}</div><button onClick={() => editTodo(todo)}>Edit</button>
 
+            </div>)
+        }
+    }, [todos, deleteTodo, editTodo]);
     useEffect(() => {
         fetchTodos();
     }, [fetchTodos])
-
-    const pushTodo = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        e.preventDefault();
-        const id = todos.length + 1;
-        const data = { ...formData, id };
-        addTodo(data);
-    }, [formData, addTodo, todos]);
 
     const onChange = (e: any): void => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     }
-    return <div>{getTodoList}
+    const pushTodo = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        const id = todos.length + 1;
+        const data = { id, ...formData, };
+        console.log(data);
+        addTodo(data);
+    }, [formData, todos, addTodo]);
+
+    return <div>
+        {getTodoList}
         <form>
             <input
+              value = {formData.title || ''}
                 type="text"
                 name="title"
                 placeholder="enter the title"
@@ -47,6 +62,7 @@ export const App: React.FC = () => {
             />
             <select name="completed"
                 onChange={onChange}
+                value = {formData.completed === '0' ? '0' : '1'}
                 required>
                 <option>Please selecte</option>
                 <option value="0"> No</option>

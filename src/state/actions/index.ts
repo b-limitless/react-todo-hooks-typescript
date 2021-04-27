@@ -1,21 +1,22 @@
-import axios from 'axios';
-import { Dispatch } from 'redux';
+
 import {ActionTypes} from '../action-types';
+import {Dispatch} from 'redux';
+import axios from 'axios';
 
 export interface Todo {
-    id:number;
-    title:string;
-    completed:boolean;
+    id: number;
+    title: string;
+    completed: boolean | string
 }
 
-export interface FetchTodosAction  {
-    type: ActionTypes.fetchTodos;
+export interface FetchTodoAction {
+    type: ActionTypes.fetchTodos,
     payload: Todo[]
 }
 
 export interface DeleteTodoAction {
     type: ActionTypes.deleteTodo,
-    payload:number;
+    payload: number
 }
 
 export interface AddTodoAction {
@@ -26,12 +27,12 @@ export interface AddTodoAction {
 const url = 'https://jsonplaceholder.typicode.com/todos/';
 
 export const fetchTodos = () => {
-    return async(dispatch:Dispatch) => {
-        const response = await axios.get(url);
-        const sliceData = response.data.splice(0,10);
-        dispatch<FetchTodosAction>({
+    return async(dispatch: Dispatch) => {
+        const response = await axios(url);
+        const data = response.data.slice(0,10);
+        dispatch<FetchTodoAction>({
             type: ActionTypes.fetchTodos,
-            payload: sliceData
+            payload: data
         })
     }
 }
@@ -39,13 +40,13 @@ export const fetchTodos = () => {
 export const deleteTodo = (id:number) => {
     return {
         type: ActionTypes.deleteTodo,
-        payload:id
+        payload: id
     }
-}
+} 
 
-export const addTodo = (todo:Todo) => {
-   return {
-       type: ActionTypes.addTodo,
-       payload: todo
-   }
+export const addTodo = (todo: Todo) => {
+    return {
+        type: ActionTypes.addTodo,
+        payload: todo
+    }
 }

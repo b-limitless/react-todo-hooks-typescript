@@ -1,4 +1,4 @@
-import {todoReducer} from './todos';
+import {todoReducers} from './todos';
 import {Todo} from '../actions';
 import { combineReducers } from 'redux';
 
@@ -7,7 +7,7 @@ export interface StoreState {
 }
 
 export const reducers = combineReducers<StoreState>({
-    todos: todoReducer
-})
+    todos: todoReducers
+});
 
-export type RootState = ReturnType<typeof reducers>
+export type RootState = ReturnType<typeof reducers>;
