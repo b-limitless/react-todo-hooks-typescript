@@ -5,14 +5,14 @@ import './App.css';
 
 interface Todo {
     title: string;
-    completed: boolean | string;
+    completed: boolean;
 }
 
 interface TodoItem extends Todo {
     id: number;
 }
 export const App = () => {
-    const [formData, setFormData] = useState<Todo>({ title: '', completed: '' });
+    const [formData, setFormData] = useState<Todo>({ title: '', completed: false });
     const [editMode, setEditMode] = useState<boolean>(false);
     const todos = useTypedSelector(({ todos }) => {
         return todos;
@@ -62,7 +62,6 @@ export const App = () => {
             />
             <select name="completed"
                 onChange={onChange}
-                value = {formData.completed === '0' ? '0' : '1'}
                 required>
                 <option>Please selecte</option>
                 <option value="0"> No</option>

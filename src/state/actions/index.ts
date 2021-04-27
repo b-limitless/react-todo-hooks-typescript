@@ -6,7 +6,7 @@ import axios from 'axios';
 export interface Todo {
     id: number;
     title: string;
-    completed: boolean | string
+    completed: boolean
 }
 
 export interface FetchTodoAction {
