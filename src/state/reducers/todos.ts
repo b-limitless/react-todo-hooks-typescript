@@ -9,6 +9,10 @@ export const todoReducers = (state:Todo[] = [], action:Action) => {
             return state.filter((todo:Todo) => todo.id !== action.payload);
         case ActionTypes.addTodo:
             return [...state, action.payload]
+        case ActionTypes.editTodo:
+            const updateTodo = action.payload;
+            console.log(state);
+            return state;
         default:
             return state;
     }

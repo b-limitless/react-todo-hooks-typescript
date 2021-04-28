@@ -24,6 +24,11 @@ export interface AddTodoAction {
     payload: Todo
 }
 
+export interface EditTodoAction {
+    type: ActionTypes.editTodo,
+    payload: Todo
+}
+
 const url = 'https://jsonplaceholder.typicode.com/todos/';
 
 export const fetchTodos = () => {
@@ -47,6 +52,13 @@ export const deleteTodo = (id:number) => {
 export const addTodo = (todo: Todo) => {
     return {
         type: ActionTypes.addTodo,
+        payload: todo
+    }
+}
+
+export const editTodo = (todo: Todo) => {
+    return {
+        type: ActionTypes.editTodo,
         payload: todo
     }
 }
