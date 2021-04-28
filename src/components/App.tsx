@@ -9,18 +9,16 @@ interface Todo {
     completed: boolean;
 }
 
-interface TodoItem extends Todo {
-    id: number;
-}
+
 export const App = () => {
-    const [formData, setFormData] = useState<Todo>({ title: '', completed: false });
+    const [formData, setFormData] = useState<Todo>({ title: '', completed: false, id: undefined});
     const [editMode, setEditMode] = useState<boolean>(false);
     const todos = useTypedSelector(({ todos }) => {
         return todos;
     });
     const { fetchTodos, deleteTodo, addTodo, editTodo } = useActions();
 
-    const editTodoLocal = useCallback((todo: TodoItem) => {
+    const editTodoLocal = useCallback((todo: Todo) => {
         // Dispatch update here 
         setFormData(todo);
         setEditMode(state => !state)
@@ -29,7 +27,7 @@ export const App = () => {
     const getTodoList = useMemo(() => {
         if (todos.length > 0) {
             // @ts-ignore
-            return todos.map((todo) => <div key={todo.id} className="wrapper"><div onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.title}</div><button onClick={() => editTodoLocal(todo)}>Edit</button>
+            return todos.map((todo, i) => <div key={i} className="wrapper"><div onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.title}</div><button onClick={() => editTodoLocal(todo)}>Edit</button>
 
             </div>)
         }
@@ -48,7 +46,7 @@ export const App = () => {
     const pushTodo = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         const id = todos.length + 1;
-        const data = { id, ...formData, };
+        const data = { usersId:1, id, ...formData, };
         addTodo(data);
     }, [formData, todos, addTodo]);
 
@@ -56,13 +54,12 @@ export const App = () => {
         e.preventDefault();
         // @ts-ignore
         editTodo(formData);
-    }, [formData])
-
+    }, [formData, editTodo])
 
 
     return <div>
         {getTodoList}
-        <div>{formData.completed ? 'this is true' : 'not true'}</div>
+        
         <form>
             <input
                 value={formData.title || ''}
@@ -80,6 +77,7 @@ export const App = () => {
                 <option value="0"> No</option>
                 <option value="1">Yes</option>
             </select>
+            
             {editMode && <button type="submit" onClick = {(e) => updatedTodo(e) }>Update</button>}
             {!editMode && <button type="submit" onClick={(e) => pushTodo(e)}>Save</button>}
         </form>

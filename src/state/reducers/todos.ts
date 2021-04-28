@@ -13,7 +13,8 @@ export const todoReducers = (state:Todo[] = [], action:Action) => {
             const updateTodo = action.payload;
             const updatedTodo = state.map(todo => {
                 if(todo.id === updateTodo.id) {
-                    return updateTodo;
+                    todo.title = updateTodo.title;
+                    todo.completed = updateTodo.completed;
                 }
                 return todo;
             })
