@@ -11,8 +11,13 @@ export const todoReducers = (state:Todo[] = [], action:Action) => {
             return [...state, action.payload]
         case ActionTypes.editTodo:
             const updateTodo = action.payload;
-            console.log(state);
-            return state;
+            const updatedTodo = state.map(todo => {
+                if(todo.id === updateTodo.id) {
+                    return updateTodo;
+                }
+                return todo;
+            })
+            return updatedTodo;
         default:
             return state;
     }

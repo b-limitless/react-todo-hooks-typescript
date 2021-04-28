@@ -54,10 +54,11 @@ export const App = () => {
 
     const updatedTodo = useCallback((e) => {
         e.preventDefault();
-        console.log(formData.id);
+        // @ts-ignore
+        editTodo(formData);
     }, [formData])
 
-    console.log(formData);
+
 
     return <div>
         {getTodoList}
