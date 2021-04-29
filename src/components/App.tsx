@@ -16,6 +16,9 @@ export const App = () => {
     const todos = useTypedSelector(({ todos }) => {
         return todos;
     });
+    const dynamicData = useTypedSelector((state) => {
+        console.log(state);
+    });
     const { fetchTodos, deleteTodo, addTodo, editTodo } = useActions();
 
     const editTodoLocal = useCallback((todo: Todo) => {

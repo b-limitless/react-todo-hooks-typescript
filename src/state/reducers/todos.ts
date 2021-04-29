@@ -1,7 +1,8 @@
 import {Action, ActionTypes} from '../action-types';
 import {Todo} from '../actions'
 
-export const todoReducers = (state:Todo[] = [], action:Action) => {
+const inititalData = [{id: 2, title: 'hello', completed: false}];
+export const todoReducers = (state:Todo[] = inititalData, action:Action) => {
     switch(action.type) {
         case ActionTypes.fetchTodos:
             return action.payload;

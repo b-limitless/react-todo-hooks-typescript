@@ -1,10 +1,11 @@
-import {FetchTodoAction, DeleteTodoAction, AddTodoAction, EditTodoAction} from '../actions';
+import {FetchTodoAction, DeleteTodoAction, AddTodoAction, EditTodoAction, AddDynamicData} from '../actions';
 
 export enum ActionTypes {
     fetchTodos,
     deleteTodo,
     addTodo,
-    editTodo
+    editTodo,
+    addDynamicData
 }
 
-export type Action = FetchTodoAction | DeleteTodoAction | AddTodoAction | EditTodoAction;
+export type Action = FetchTodoAction | DeleteTodoAction | AddTodoAction | EditTodoAction | AddDynamicData;
