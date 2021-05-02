@@ -2,39 +2,29 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useActions } from '../hooks/use-actions';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import './App.css';
-
 interface Todo {
-    id?:number;
+    id?: number;
     title: string;
     completed: boolean;
 }
-
-
 export const App = () => {
-    const [formData, setFormData] = useState<Todo>({ title: '', completed: false, id: undefined});
+    const [formData, setFormData] = useState<Todo>({ title: '', completed: false, id: undefined });
     const [editMode, setEditMode] = useState<boolean>(false);
     const todos = useTypedSelector(({ todos }) => {
         return todos;
     });
-    const dynamicData = useTypedSelector((state) => {
-        console.log(state);
-    });
     const { fetchTodos, deleteTodo, addTodo, editTodo } = useActions();
-
     const editTodoLocal = useCallback((todo: Todo) => {
-        // Dispatch update here 
         setFormData(todo);
         setEditMode(state => !state)
     }, [])
- 
     const getTodoList = useMemo(() => {
         if (todos.length > 0) {
-            // @ts-ignore
             return todos.map((todo, i) => <div key={i} className="wrapper"><div onClick={() => deleteTodo(todo.id)} key={todo.id}>{todo.title}</div><button onClick={() => editTodoLocal(todo)}>Edit</button>
-
             </div>)
         }
     }, [todos, deleteTodo, editTodoLocal]);
+
     useEffect(() => {
         fetchTodos();
     }, [fetchTodos])
@@ -46,23 +36,24 @@ export const App = () => {
         }
         setFormData({ ...formData, [name]: value });
     }
+
     const pushTodo = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         const id = todos.length + 1;
-        const data = { usersId:1, id, ...formData, };
+        const data = { usersId: 1, id, ...formData, };
         addTodo(data);
+        setFormData({ title: '', completed: false, id: undefined })
     }, [formData, todos, addTodo]);
-
-    const updatedTodo = useCallback((e) => {
+    const updatedTodo = useCallback(e => {
         e.preventDefault();
         // @ts-ignore
         editTodo(formData);
-    }, [formData, editTodo])
-
+        setEditMode(false);
+        setFormData({ title: '', completed: false, id: undefined })
+    }, [formData, editTodo]);
 
     return <div>
         {getTodoList}
-        
         <form>
             <input
                 value={formData.title || ''}
@@ -80,8 +71,7 @@ export const App = () => {
                 <option value="0"> No</option>
                 <option value="1">Yes</option>
             </select>
-            
-            {editMode && <button type="submit" onClick = {(e) => updatedTodo(e) }>Update</button>}
+            {editMode && <button type="submit" onClick={(e) => updatedTodo(e)}>Update</button>}
             {!editMode && <button type="submit" onClick={(e) => pushTodo(e)}>Save</button>}
         </form>
     </div>
