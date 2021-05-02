@@ -14,7 +14,8 @@ export interface DynamicData {
   mutable: boolean;
   previousValue: number;
   enabled: boolean;
-  time?: string;
+  time?: string | Date;
+  upOrDown?:string;
 }
 
 export interface FetchTodoAction {
