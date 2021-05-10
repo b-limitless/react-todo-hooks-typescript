@@ -1,16 +1,23 @@
 import {todoReducers} from './todos';
 import {dymaicDataReducers} from './dynamic-data';
-import {Todo, DynamicData} from '../actions';
+import {stopTimerReducer} from './stop-timer';
+import {addDataReducer} from './add-data';
+import {Todo, DynamicData, StopTimer} from '../actions';
 import { combineReducers } from 'redux';
 
 export interface StoreState {
     todos: Todo[],
-    dynamicData: DynamicData[]
+    dynamicData: DynamicData[],
+    addData: any,
+    stopTimer: any
+
 }
 
 export const reducers = combineReducers<StoreState>({
     todos: todoReducers,
-    dynamicData: dymaicDataReducers
+    dynamicData: dymaicDataReducers,
+    addData: addDataReducer,
+    stopTimer: stopTimerReducer
     
 });
 

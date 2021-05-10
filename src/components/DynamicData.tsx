@@ -3,48 +3,75 @@ import { Button, Container } from './Elements';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import { useActions } from '../hooks/use-actions';
 import { DynamicData } from '../state/actions';
-const defaultData = [
-    {
-        filedName: "A",
-        value: 3,
-        mutable: false,
-        previousValue: 3,
-        enabled: true,
-    },
-    {
-        filedName: "B",
-        value: 3,
-        mutable: false,
-        previousValue: 3,
-        enabled: true,
-    },
-    {
-        filedName: "C",
-        value: 3,
-        mutable: false,
-        previousValue: 3,
-        enabled: true,
-    },
-    {
-        filedName: "D",
-        value: 3,
-        mutable: false,
-        previousValue: 3,
-        enabled: false,
-    },
-];
+import Header from './Header';
+
 
 function App() {
-    const [i, setI] = useState<number>(0);
+
     const precision = 100;
+    const [i, setI] = useState<number>(0)
+    const [defaultData, setDefaultData] = useState([
+        {
+            filedName: "A",
+            value: 3,
+            mutable: false,
+            previousValue: 3,
+            enabled: false,
+        },
+        {
+            filedName: "B",
+            value: 3,
+            mutable: false,
+            previousValue: 3,
+            enabled: true,
+        },
+        {
+            filedName: "C",
+            value: 3,
+            mutable: false,
+            previousValue: 3,
+            enabled: true,
+        },
+        {
+            filedName: "D",
+            value: 3,
+            mutable: false,
+            previousValue: 3,
+            enabled: false,
+        },
+    ]);
 
-  
-
-    const getDynamicData = useTypedSelector(({ dynamicData }) => {
-        return dynamicData;
+    const state = useTypedSelector((state) => {
+       return state;
     });
-   console.log(getDynamicData);
-    const { addDynamicData } = useActions();
+
+    console.log(state);
+
+    const getTimerStatus = useTypedSelector(({stopTimer}) => {
+        return stopTimer;
+    });
+    
+    const getDynamicData = useTypedSelector(({ addData }) => {
+        return addData;
+    });
+
+    console.log(getDynamicData);
+    if (getDynamicData.length > 0) {
+        // @ts-ignore
+        getDynamicData.map(function (item) {
+            //console.log(item);
+
+        })
+    }
+    //    if(getDynamicData.length > 0) {
+    //        // @ts-ignore
+    //        getDynamicData.forEach(item => {
+    //         console.log(JSON.parse(item))
+    //        })
+    //    }
+
+
+    const { addData, stopTimer } = useActions();
 
     const updatedValue = useCallback((fields: DynamicData[]) => {
         fields.map((item) => {
@@ -57,6 +84,7 @@ function App() {
                     (1 * precision);
                 item.previousValue = item.value;
                 item.value = randomnum;
+                item.change = item.value - item.previousValue;
                 item.upOrDown = item.previousValue > item.value ? "-" : "+";
                 item.time = new Date();
             }
@@ -64,13 +92,21 @@ function App() {
         });
         return fields;
     }, []);
- 
-    useEffect(() => {   
-        if (getDynamicData.length === 5 || i === 5) {
+
+    
+
+    useEffect(() => {
+        stopTimer(false);
+    }, [stopTimer]);
+
+    useEffect(() => {
+        //|| i === 5
+        if (getTimerStatus) {
             return;
         }
+        const updatedDate = updatedValue(defaultData)
         const timer = setInterval(() => {
-            const updatedDate = updatedValue(defaultData)
+
             // const updatedData = addDynamicData({
             //     filedName: "A",
             //     value: 3,
@@ -78,16 +114,21 @@ function App() {
             //     previousValue: 3,
             //     enabled: true,
             // });
-            console.table(updatedDate);
+            const jData = JSON.stringify(updatedDate);
+            //localStorage.setItem(i.toString(), jData);
+            //console.table(updatedDate)
+            // console.log(addData(updatedDate))
+            addData(jData);
             //addDynamicData(updatedDate);
-            
-            setI(i+1);
-           
-        }, 1000);
-        return () => clearInterval(timer);
-    }, [addDynamicData, getDynamicData, i, updatedValue])
 
-    
-    return <Container><Button>Hello</Button></Container>
+            //setI(i + 1)
+
+        }, 2000);
+        return () => clearInterval(timer);
+    }, [addData, getDynamicData, updatedValue, getTimerStatus])
+
+
+
+    return <Header/>
 }
 export default App;

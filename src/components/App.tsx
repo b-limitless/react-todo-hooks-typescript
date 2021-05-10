@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useActions } from '../hooks/use-actions';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import './App.css';
+import Header from './Header';
 interface Todo {
     id?: number;
     title: string;
@@ -53,6 +54,7 @@ export const App = () => {
     }, [formData, editTodo]);
 
     return <div>
+        <Header />
         {getTodoList}
         <form>
             <input

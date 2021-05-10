@@ -5,12 +5,13 @@ import { App } from './components/App';
 import { store } from './state';
 import { HashRouter as Router, Route } from "react-router-dom";
 import DynamicData from './components/DynamicData';
-
+import Graphs from './components/Graphs';
 ReactDOM.render(
     <Provider store={store}>
          <Router basename="/">
          <Route exact path="/" component={App} />
          <Route exact path = "/dynamic_data" component={DynamicData} />
+         <Route exact path = "/graphs" component = {Graphs} />
          </Router>
     </Provider>,
     document.querySelector('#root'))

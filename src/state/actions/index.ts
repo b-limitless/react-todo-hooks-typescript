@@ -1,4 +1,4 @@
-import {ActionTypes } from "../action-types";
+import { ActionTypes } from "../action-types";
 import { Dispatch } from "redux";
 import axios from "axios";
 
@@ -15,9 +15,13 @@ export interface DynamicData {
   previousValue: number;
   enabled: boolean;
   time?: string | Date;
-  upOrDown?:string;
+  upOrDown?: string;
+  change?: number | string;
 }
 
+export interface StopTimer {
+  stop: boolean;
+}
 export interface FetchTodoAction {
   type: ActionTypes.fetchTodos;
   payload: Todo[];
@@ -38,9 +42,19 @@ export interface EditTodoAction {
   payload: Todo;
 }
 
+export interface AddData {
+  type: ActionTypes.addData;
+  payload: any;
+}
+
 export interface AddDynamicData {
-    type: ActionTypes.addDynamicData,
-    payload: DynamicData
+  type: ActionTypes.addDynamicData;
+  payload: DynamicData;
+}
+
+export interface StopTimer {
+  type: ActionTypes.stopTimer,
+  payload: StopTimer
 }
 
 const url = "https://jsonplaceholder.typicode.com/todos/";
@@ -78,10 +92,22 @@ export const editTodo = (todo: Todo) => {
 };
 
 export const addDynamicData = (data: DynamicData) => {
-    return {
-        type: ActionTypes.addDynamicData,
-        payload: data
-    }
+  return {
+    type: ActionTypes.addDynamicData,
+    payload: data,
+  };
+};
 
+export const addData = (data: any) => {
+  return {
+    type: ActionTypes.addData,
+    payload: data,
+  };
+};
+
+export const stopTimer = (data:boolean) => {
+  return {
+    type: ActionTypes.stopTimer,
+    payload: data
+  }
 }
-
