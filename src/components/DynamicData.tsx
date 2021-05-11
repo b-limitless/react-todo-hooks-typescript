@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Container } from './Elements';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import { useActions } from '../hooks/use-actions';
@@ -16,7 +16,7 @@ function App() {
             value: 3,
             mutable: false,
             previousValue: 3,
-            enabled: false,
+            enabled: true,
         },
         {
             filedName: "B",
@@ -45,8 +45,6 @@ function App() {
        return state;
     });
 
-    console.log(state);
-
     const getTimerStatus = useTypedSelector(({stopTimer}) => {
         return stopTimer;
     });
@@ -55,7 +53,6 @@ function App() {
         return addData;
     });
 
-    console.log(getDynamicData);
     if (getDynamicData.length > 0) {
         // @ts-ignore
         getDynamicData.map(function (item) {
@@ -93,8 +90,6 @@ function App() {
         return fields;
     }, []);
 
-    
-
     useEffect(() => {
         stopTimer(false);
     }, [stopTimer]);
@@ -125,10 +120,77 @@ function App() {
 
         }, 2000);
         return () => clearInterval(timer);
-    }, [addData, getDynamicData, updatedValue, getTimerStatus])
+    }, [addData, getDynamicData, updatedValue, getTimerStatus, defaultData])
 
+    const getTableHead = useMemo(() => {
+        if(getDynamicData.length > 0) {
+            const firstRow = JSON.parse(getDynamicData[0]);
+            const keys = Object.keys(firstRow[0]);
+            
+            const tr = keys.map((item, key) => <th key = {key} scope = "col">{item}</th>);
+            return tr;
+        }
+    }, [getDynamicData])
 
+    const disableRowUpdate =  useCallback((fieldName) => {
+            const updated = defaultData.map(row => {
+                if(row.filedName === fieldName) {
+                    row.enabled = !row.enabled;
+                    return row;
+                }
+                return row;
+            });
+            setDefaultData(updated)
+            
+    }, [defaultData]);
 
-    return <Header/>
+    const getTableBody = useMemo(() => {
+        if(getDynamicData.length > 0) {
+            const firstRow = JSON.parse(getDynamicData[getDynamicData.length - 1]);
+            
+           // @ts-ignore
+          const tr = firstRow.map((item, key) => <tr key = {key} scope = "col">
+              <td>{item.filedName}</td>
+              <td>{item.value}</td>
+              <td>{item.mutable}</td>
+              <td>{item.previousValue}</td>
+              <td>{item.enabled ? <button className = "btn btn-primary" onClick = {() => disableRowUpdate(item.filedName)}>Disable</button> : <button onClick = {() => disableRowUpdate(item.filedName)} className = "btn btn-primary">Enable</button> }</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              </tr>);
+            //return tr;
+            return tr;
+        }
+    }, [getDynamicData, disableRowUpdate])
+
+    console.log(getTableBody);
+    const getLastIndexDynamic = useMemo(() => {
+        if(getDynamicData.length > 0) {
+            // Get the last index 
+            const lastIndexData = JSON.parse(getDynamicData[getDynamicData.length - 1]);
+            
+            if(lastIndexData){
+                // @ts-ignore
+                const htmlElement = lastIndexData.map((item ,key) => <div key = {key}>{item.value}</div>);
+                return htmlElement;
+            }
+            
+        }
+    }, [getDynamicData])
+
+    
+    return <><Header/>
+     <table className="table">
+  <thead>
+    <tr>
+      {getTableHead}
+    </tr>
+  </thead>
+  <tbody>
+    {getTableBody}
+  </tbody>
+</table>
+    </>
 }
 export default App;
