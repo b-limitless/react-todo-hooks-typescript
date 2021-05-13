@@ -83,7 +83,7 @@ function App() {
                 item.value = randomnum;
                 item.change = item.value - item.previousValue;
                 item.upOrDown = item.previousValue > item.value ? "-" : "+";
-                item.time = new Date();
+                item.time = new Date().toLocaleTimeString('en-US');
             }
             return item;
         });
@@ -164,7 +164,7 @@ function App() {
         }
     }, [getDynamicData, disableRowUpdate])
 
-    console.log(getTableBody);
+  
     const getLastIndexDynamic = useMemo(() => {
         if(getDynamicData.length > 0) {
             // Get the last index 
