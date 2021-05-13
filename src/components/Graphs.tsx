@@ -4,7 +4,7 @@ import { useTypedSelector } from '../hooks/use-typed-selector';
 import { useActions } from '../hooks/use-actions';
 import Header from './Header';
 import { getFileByName } from '../utils/functions';
-
+//
 import {
     AreaChart,
     Area, 
@@ -66,8 +66,6 @@ const Graphs: React.FC = () => {
             charts = [];
             for (let [, item] of Object.entries(data)) {
                 for (let [key, value] of Object.entries(item)) {
-                   
-                 
                     charts.push(<AreaChart
                     width={500}
                     height={400}
