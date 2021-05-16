@@ -2,7 +2,7 @@ import {todoReducers} from './todos';
 import {dymaicDataReducers} from './dynamic-data';
 import {stopTimerReducer} from './stop-timer';
 import {addDataReducer} from './add-data';
-import {Todo, DynamicData, StopTimer} from '../actions';
+import {Todo, DynamicData} from '../actions';
 import { combineReducers } from 'redux';
 
 export interface StoreState {

@@ -1,4 +1,4 @@
-import { ActionTypes } from "../action-types";
+import {ActionTypes } from "../action-types";
 import { Dispatch } from "redux";
 import axios from "axios";
 
@@ -45,6 +45,11 @@ export interface EditTodoAction {
 export interface AddData {
   type: ActionTypes.addData;
   payload: any;
+}
+
+export interface UpdateRow {
+  type: ActionTypes.updateRow,
+  payload: string;
 }
 
 export interface AddDynamicData {
@@ -109,5 +114,12 @@ export const stopTimer = (data:boolean) => {
   return {
     type: ActionTypes.stopTimer,
     payload: data
+  }
+}
+
+export const updateRow = (fieldName:string) => {
+  return {
+    type: ActionTypes.updateRow,
+    payload: fieldName
   }
 }
