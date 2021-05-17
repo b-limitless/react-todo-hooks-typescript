@@ -60,32 +60,45 @@ const Graphs: React.FC = () => {
     }
   }, [getDynamicData]);
 
+  const uniqueArray = (value, index, self) => {
+    return self.indexOf(value) === index;
+  }
+
   const getDynamicGraph = useMemo(() => {
     let charts = null;
     if (data) {
       charts = [];
-      for (let [,item] of Object.entries(data)) {
+      for (let [, item] of Object.entries(data)) {
         for (let [key, value] of Object.entries(item)) {
-          charts.push( <div key = {key}><ResponsiveContainer  width="100%" height={500}><AreaChart
-            width={500}
-            height={400}
-            data={value}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+          // Here we need to check if there is no value chage 
+          // The no need to add the graph 
+          const getValues = value.map(row => {
+            return row.value;
+          });
+          const getUnique = getValues.filter(uniqueArray);
+          if (getUnique.length > 1) {
+            charts.push(<div key={key}><ResponsiveContainer width="100%" height={500}><AreaChart
+              width={500}
+              height={400}
+              data={value}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
 
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis />
-            <Tooltip />
-            <Area type="monotone" dataKey="change" stroke="#8884d8" fill="#8884d8" />
-          </AreaChart></ResponsiveContainer>
-          <div className = "h1 text-center"> {item[key][0]['filedName']} Statistics </div>
-          </div>)
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="time" />
+              <YAxis />
+              <Tooltip />
+              <Area type="monotone" dataKey="change" stroke="#8884d8" fill="#8884d8" />
+            </AreaChart></ResponsiveContainer>
+              <div className="h1 text-center"> {item[key][0]['filedName']} Statistics </div>
+            </div>)
+          }
+
         }
       }
     }
@@ -93,7 +106,7 @@ const Graphs: React.FC = () => {
 
   }, [data])
   console.log(data);
-  
+
   return (
     <div>
       <Header />

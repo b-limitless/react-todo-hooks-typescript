@@ -3,7 +3,6 @@ import { useTypedSelector } from '../hooks/use-typed-selector';
 import { useActions } from '../hooks/use-actions';
 import { DynamicData } from '../state/actions';
 import Header from './Header';
-import { bindActionCreators } from 'redux';
 function App() {
     const precision = 100;
 
