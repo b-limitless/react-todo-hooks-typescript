@@ -11,7 +11,7 @@ ReactDOM.render(
          <Router basename="/">
          <Route exact path="/" component={App} />
          <Route exact path = "/dynamic_data" component={DynamicData} />
-         <Route exact path = "/graphs" component = {Graphs} />
+         <Route exact path = "/statistics" component = {Graphs} />
          </Router>
     </Provider>,
     document.querySelector('#root'))
