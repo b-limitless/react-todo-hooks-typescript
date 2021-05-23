@@ -73,15 +73,15 @@ function App() {
     const getTableBody = useMemo(() => {
         if (getDynamicData.length > 0) {
             const firstRow = JSON.parse(getDynamicData[getDynamicData.length - 1]);
-            // @ts-ignore
-            const tr = firstRow.map((item, key) => <tr key={key}>
+
+            const tr = firstRow.map((item:DynamicData, key:number) => <tr key={key}>
                 <td>{item.filedName}</td>
                 <td>{item.value}</td>
                 <td>{item.mutable}</td>
                 <td>{item.previousValue}</td>
                 <td>{item.enabled ? <button className="btn btn-primary" onClick={() => disableRowUpdate(item.filedName)}>Disable</button> : <button onClick={() => disableRowUpdate(item.filedName)} className="btn btn-primary">Enable</button>}</td>
                 <td>{item.change}</td>
-                <td>{item.change > 0 ? <div className = "btn btn-success">+</div> : <div className = "btn btn-danger">-</div>}</td>
+                <td>{item.change && item.change > 0 ? <div className = "btn btn-success">+</div> : <div className = "btn btn-danger">-</div>}</td>
                 <td>{item.time}</td>
             </tr>);
             return tr;

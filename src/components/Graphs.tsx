@@ -1,4 +1,5 @@
-//@ts-nocheck
+
+// @ts-nocheck
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import { useActions } from '../hooks/use-actions';
@@ -60,7 +61,7 @@ const Graphs: React.FC = () => {
     }
   }, [getDynamicData]);
 
-  const uniqueArray = (value, index, self) => {
+  const uniqueArray = (value: number, index: number, self: number[]) => {
     return self.indexOf(value) === index;
   }
 
@@ -70,12 +71,11 @@ const Graphs: React.FC = () => {
       charts = [];
       for (let [, item] of Object.entries(data)) {
         for (let [key, value] of Object.entries(item)) {
-          // Here we need to check if there is no value chage 
-          // The no need to add the graph 
           const getValues = value.map(row => {
             return row.value;
           });
           const getUnique = getValues.filter(uniqueArray);
+
           if (getUnique.length > 1) {
             charts.push(<div key={key}><ResponsiveContainer width="100%" height={500}><AreaChart
               width={500}
@@ -105,7 +105,7 @@ const Graphs: React.FC = () => {
     return charts;
 
   }, [data])
-  console.log(data);
+
 
   return (
     <div>
