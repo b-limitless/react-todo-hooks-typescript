@@ -6,7 +6,8 @@ import {
   AddDynamicData,
   AddData,
   StopTimer,
-  UpdateRow
+  UpdateRow,
+  AuthUserAction
 } from "../actions";
 
 export enum ActionTypes {
@@ -17,7 +18,8 @@ export enum ActionTypes {
   addDynamicData,
   addData,
   stopTimer,
-  updateRow
+  updateRow,
+  authUser
 }
 
 export type Action =
@@ -29,3 +31,4 @@ export type Action =
   | AddData
   | StopTimer
   | UpdateRow
+  | AuthUserAction
