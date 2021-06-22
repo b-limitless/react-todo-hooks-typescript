@@ -8,8 +8,8 @@ import DynamicData from './components/DynamicData';
 import Graphs from './components/Graphs';
 import Login from './components/Login';
 import Dashboard from './components/Dashbaord';
-import { useActions } from './hooks/use-actions';
 import { ActionTypes } from './state';
+import PrivateRoute from './common/PrivateRoute';
 
 if(localStorage.jwtTokenT) {
    store.dispatch({
@@ -27,7 +27,8 @@ ReactDOM.render(
          <Route exact path = "/dynamic_data" component={DynamicData} />
          <Route exact path = "/statistics" component = {Graphs} />
          <Route exact path = "/login" component = {Login} />
-         <Route exact path = "/dashboard" component = { Dashboard } />
+         {/* <Route exact path = "/dashboard" component = { Dashboard } /> */}
+         <PrivateRoute exact path = "/dashboard" component = {Dashboard} />
          </Router>
     </Provider>,
     document.querySelector('#root'))
